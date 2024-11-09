@@ -1,6 +1,5 @@
 #include <iostream>
 #include "pca_library/pca.h"
-#include "lib2/fun2.h"
 #include <iostream>
 int main()
 {
@@ -17,7 +16,7 @@ int main()
     auto y = pca.inverse_transform(x);
     std::cout<<"Reconstructed"<<std::endl;
     std::cout<<y<<std::endl;
-    fun2();
+    
     std::cout<<"Hello from HFT"<<std::endl;
     return 0;
 }

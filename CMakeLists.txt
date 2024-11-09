@@ -23,10 +23,7 @@ link_directories(${GLOBAL_OUTPUT_PATH})
 add_subdirectory(src/pca_library)
 include_directories(src/pca_library/inc)
 
-add_subdirectory(src/lib2)
-include_directories(src/lib2/inc)
-
-add_subdirectory(src/app1)
+add_subdirectory(src/hftapp)
 
 install(FILES ${executables}      DESTINATION "bin")
 install(FILES ${shared_libraries} DESTINATION "bin")
@@ -40,7 +37,5 @@ file(GLOB static_libraries "${GLOBAL_OUTPUT_PATH}/*.lib")
 # SDK Installation
 install(DIRECTORY "src/pca_library/inc/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY "src/pca_library/inc/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.hpp")
-install(DIRECTORY "src/lib2/inc/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY "src/lib2/inc/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.hpp")
 
 
