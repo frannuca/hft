@@ -23,7 +23,7 @@ class PCA{
 
     const Eigen::VectorXd& means();
 
-    constexpr size_t count();
+    constexpr int count(){return num_components_;};
 
     private:
 

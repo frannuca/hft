@@ -60,8 +60,3 @@ const Eigen::VectorXd&  PCA::means(){
     fit_transform();
     return *mean_;
 }
-
-constexpr size_t PCA::count()
-{
-    return num_components_;
-}

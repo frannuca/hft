@@ -25,6 +25,12 @@ include_directories(src/pca_library/inc)
 
 add_subdirectory(src/hftapp)
 
+# Add test subdirectory
+add_subdirectory(test)
+
+# Enable testing
+enable_testing()
+
 install(FILES ${executables}      DESTINATION "bin")
 install(FILES ${shared_libraries} DESTINATION "bin")
 install(FILES ${static_libraries} DESTINATION "bin")
