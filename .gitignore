@@ -1,0 +1,68 @@
+# General C++ files
+*.o
+*.o.d
+*.obj
+*.so
+*.a
+*.lib
+*.dll
+*.make
+*.exe
+*.out
+*.dylib
+*.cmake
+
+# CMake files
+**CMakeFiles/
+**CMakeCache.txt
+**cmake_install.cmake
+**build/
+**Makefile
+
+# Visual Studio Code settings
+.vscode/
+
+# Xcode specific files
+*.pbxproj
+*.xcworkspace
+*.xcuserstate
+*.xcodeproj
+*.xcuserdata
+
+# Generated files
+*.gch
+*.pch
+
+# Temporary files
+*.tmp
+*.log
+*.swp
+*.swo
+*.bak
+*~
+
+# Qt Creator specific
+*.user
+*.pro.user
+*.qrc.user
+*.moc
+
+# Backup files
+*.old
+*.orig
+*.rej
+*.swp
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE-specific files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Test output
+test_output/
