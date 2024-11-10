@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(multi_subproject_template)
+project(HFT)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -21,27 +21,34 @@ endforeach(OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES)
 link_directories(${GLOBAL_OUTPUT_PATH})
 
 add_subdirectory(src/pca_library)
-include_directories(src/pca_library/inc)
-
+add_subdirectory(src/volatility)
+add_subdirectory(src/time)
 add_subdirectory(src/hftapp)
-
-# Add test subdirectory
 add_subdirectory(test)
+
+include_directories(src/pca_library/include)
+include_directories(src/volatility/include)
+include_directories(src/time/include)
+
 
 # Enable testing
 enable_testing()
-
-install(FILES ${executables}      DESTINATION "bin")
-install(FILES ${shared_libraries} DESTINATION "bin")
-install(FILES ${static_libraries} DESTINATION "bin")
 
 file(GLOB executables      "${GLOBAL_OUTPUT_PATH}/*.exe")
 file(GLOB shared_libraries "${GLOBAL_OUTPUT_PATH}/*.dll")
 file(GLOB static_libraries "${GLOBAL_OUTPUT_PATH}/*.lib")
 
+install(FILES ${executables}      DESTINATION "bin")
+install(FILES ${shared_libraries} DESTINATION "bin")
+install(FILES ${static_libraries} DESTINATION "bin")
+
 
 # SDK Installation
-install(DIRECTORY "src/pca_library/inc/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.h")
-install(DIRECTORY "src/pca_library/inc/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.hpp")
+install(DIRECTORY "src/pca_library/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY "src/pca_library/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.hpp")
 
+install(DIRECTORY "src/volatility/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY "src/volatility/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.hpp")
 
+install(DIRECTORY "src/time/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY "src/time/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.hpp")

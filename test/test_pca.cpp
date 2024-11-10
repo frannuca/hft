@@ -1,9 +1,11 @@
 #include <gtest/gtest.h>
 #include <Eigen/Dense>
-#include <pca_library/pca.h>
+#include "pca/pca.hpp"
+
 
 // Test the PCA fit and transform
 TEST(PCA, FitTransform) {
+    using namespace hft::pca;
     Eigen::MatrixXd data = Eigen::MatrixXd::Random(4,2);
     
 

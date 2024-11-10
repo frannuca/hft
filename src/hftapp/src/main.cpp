@@ -1,8 +1,11 @@
 #include <iostream>
-#include "pca_library/pca.h"
-#include <iostream>
+#include <Eigen/Dense>
+#include "pca/pca.hpp"
+using namespace hft::pca;
+
 int main()
 {
+   
     Eigen::MatrixXd data = Eigen::MatrixXd::Random(4,2);
     
 

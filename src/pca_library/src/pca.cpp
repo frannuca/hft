@@ -1,9 +1,9 @@
-#include <iostream>
-#include "pca_library/pca.h"
 #include <string>
 #include <sstream>
 #include <Eigen/Eigenvalues>
+#include "pca/pca.hpp"
 
+using namespace hft::pca;
 
 PCA::PCA(size_t number_of_component, Eigen::MatrixXd& data):num_components_(number_of_component),_data(data){
     
