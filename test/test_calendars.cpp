@@ -10,7 +10,8 @@ TEST(CALENDARS, Holidays)
     using namespace hft::time;
     using namespace std::chrono;
 
-    auto date = std::chrono::year_month_day{2022y / January / 1};
     auto calendarnye = create_calendar(FinancialCalendar::NYSE);
-    ASSERT_EQ(calendarnye->is_holiday(date), true);
+    ASSERT_EQ(calendarnye->is_holiday(2022y / January / 1), true);
+    ASSERT_EQ(calendarnye->is_holiday(2024y / July / 4), true);
+    ASSERT_EQ(calendarnye->is_holiday(2024y / November / 18), false);
 }

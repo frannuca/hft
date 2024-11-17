@@ -23,12 +23,14 @@ link_directories(${GLOBAL_OUTPUT_PATH})
 add_subdirectory(src/pca_library)
 add_subdirectory(src/volatility)
 add_subdirectory(src/time)
+add_subdirectory(src/optimizer)
 add_subdirectory(src/hftapp)
 add_subdirectory(test)
 
 include_directories(src/pca_library/include)
 include_directories(src/volatility/include)
 include_directories(src/time/include)
+include_directories(src/optimizer/include)
 
 
 # Enable testing
@@ -52,3 +54,6 @@ install(DIRECTORY "src/volatility/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FI
 
 install(DIRECTORY "src/time/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.h")
 install(DIRECTORY "src/time/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.hpp")
+
+install(DIRECTORY "src/optimizer/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.h")
+install(DIRECTORY "src/optimizer/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.hpp")
