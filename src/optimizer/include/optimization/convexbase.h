@@ -1,3 +1,5 @@
+#ifndef HFT_OPTIMIZER_CONVEXBASE_H
+#define HFT_OPTIMIZER_CONVEXBASE_H
 #include <functional>
 #include <string>
 namespace nlopt
@@ -26,4 +28,6 @@ class ConvexBase
     virtual std::unique_ptr<nlopt::opt> get_optimizer(int number_of_variables) const = 0;
 };
 } // namespace hft::optimizer
-  // namespace hft::optimizer
+// namespace hft::optimizer
+
+#endif

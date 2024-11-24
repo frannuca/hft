@@ -54,7 +54,7 @@ std::vector<double> hft::optimizer::ConvexBase::optimize(int number_of_variables
     if (fDataInEqConstaint != nullptr)
     {
 
-        opt->add_inequality_constraint(objective_function, (void *)fDataEqConstaint);
+        opt->add_inequality_constraint(objective_function, (void *)fDataInEqConstaint);
     }
     if (fDataEqConstaint != nullptr)
     {
