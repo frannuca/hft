@@ -17,6 +17,7 @@
 **CMakeCache.txt
 **cmake_install.cmake
 **build/
+**.cache/
 **Makefile
 
 # Visual Studio Code settings
