@@ -1,6 +1,8 @@
 #include "volatility/sabr.hpp"
 #include "optimization/ConvexLBFGS.h"
+#include "optimization/NelderMead.h"
 #include <algorithm>
+#include <iostream>
 #include <iterator>
 #include <map>
 
@@ -19,6 +21,15 @@ double SABR::operator()(double F, double K, double T) const
     if (F <= 0.0 || K <= 0.0 || *alpha_ <= 0.0)
     {
         throw std::invalid_argument("Invalid input: F, K, and alpha must be positive.");
+    }
+
+    if (T <= 0.0)
+    {
+        throw std::invalid_argument("Invalid input: T must be positive.");
+    }
+    if (F == K == T == nu_ == rho_ == alpha_ == beta_)
+    {
+        return 0;
     }
 
     const double epsilon = 1e-8; // small value to avoid division by zero
@@ -83,12 +94,13 @@ SABR SABR::CreateModel(SABRData surface_data)
             error += std::pow(modelVol - marketVol, 2);
         }
 
+        // std::cout << "Error: " << error << std::endl;
         return error;
     };
 
     hft::optimizer::FunctionDefinition function_support{.fFunc = objectiveFunction, .fGrad = std::nullopt};
 
-    hft::optimizer::ConvexLBFGS convex;
+    hft::optimizer::ConvexNelderMead convex;
     auto result = convex.optimize({alpha, beta, rho, nu}, function_support, std::nullopt, std::nullopt);
 
     // Create and return the calibrated SABR model

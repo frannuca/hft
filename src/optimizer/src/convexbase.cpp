@@ -64,8 +64,9 @@ std::vector<double> hft::optimizer::ConvexBase::optimize(std::vector<double> x0,
     }
 
     // Set optimization parameters
-    opt->set_xtol_rel(1e-4);
-    opt->set_maxeval(100);
+    opt->set_xtol_rel(1e-6);
+    opt->set_maxeval(10000);
+    opt->set_ftol_rel(1e-6);
 
     // Initial guess
     std::vector<double> x = x0;
