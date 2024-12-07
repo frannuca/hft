@@ -1,4 +1,8 @@
 #include "volatility/sabr.hpp"
+#include "optimization/ConvexLBFGS.h"
+#include <algorithm>
+#include <iterator>
+#include <map>
 
 using namespace volatility;
 
@@ -49,6 +53,44 @@ double SABR::operator()(double F, double K, double T) const
 
 SABR SABR::CreateModel(SABRData surface_data)
 {
-    // Implement the SABR calibration here
-    return SABR(0.0, 0.0, 0.0, 0.0);
+    // Extract market data from surface_data
+    // Initial guess for SABR parameters
+    double alpha = 0.2;
+    double beta = 0.5;
+    double rho = 0.0;
+    double nu = 0.2;
+
+    // Define the objective function for optimization
+    auto objectiveFunction = [&](const std::vector<double> &params)
+    {
+        double alpha = params[0];
+        double beta = params[1];
+        double rho = params[2];
+        double nu = params[3];
+
+        double error = 0.0;
+
+        for (const SABRDataRow &point : surface_data.rows)
+        {
+            double F = point.forward;
+            double K = point.strike;
+            double T = point.maturity_in_years;
+            double marketVol = point.implied_volatility;
+
+            SABR sabrModel(alpha, beta, rho, nu);
+            double modelVol = sabrModel(F, K, T);
+
+            error += std::pow(modelVol - marketVol, 2);
+        }
+
+        return error;
+    };
+
+    hft::optimizer::FunctionDefinition function_support{.fFunc = objectiveFunction, .fGrad = std::nullopt};
+
+    hft::optimizer::ConvexLBFGS convex;
+    auto result = convex.optimize({alpha, beta, rho, nu}, function_support, std::nullopt, std::nullopt);
+
+    // Create and return the calibrated SABR model
+    return SABR(result[0], result[1], result[2], result[3]);
 }

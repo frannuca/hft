@@ -20,7 +20,7 @@ class ConvexBase
   public:
     virtual ~ConvexBase() = default;
     virtual std::string name() const = 0;
-    std::vector<double> optimize(int number_of_variables, FunctionDefinition fFitness,
+    std::vector<double> optimize(std::vector<double> x0, FunctionDefinition fFitness,
                                  std::optional<FunctionDefinition> fEqualityConstrains,
                                  std::optional<FunctionDefinition> fInequalityConstaints) const;
 

@@ -15,7 +15,7 @@ TEST(OPT, Convex)
                                                 }};
 
     hft::optimizer::ConvexLBFGS convex;
-    auto result = convex.optimize(2, data, std::nullopt, std::nullopt);
+    auto result = convex.optimize({0, 0}, data, std::nullopt, std::nullopt);
 
     ASSERT_EQ(result.size(), 2);
     ASSERT_NEAR(result[0], 3, 1e-8);
@@ -38,7 +38,7 @@ TEST(OPT, Convex_Constraints)
                                                         return std::vector<double>{1, 0};
                                                     }};
     hft::optimizer::ConvexAUGLAG convex;
-    auto result = convex.optimize(2, data, std::nullopt, dataInEq);
+    auto result = convex.optimize({0, 0}, data, std::nullopt, dataInEq);
 
     ASSERT_EQ(result.size(), 2);
     ASSERT_NEAR(result[0], 2.5, 1e-8);

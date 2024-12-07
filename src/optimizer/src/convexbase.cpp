@@ -1,4 +1,5 @@
 #include "optimization/convexbase.h"
+#include <cstdlib>
 #include <memory>
 #include <nlopt.hpp>
 #include <ranges>
@@ -38,11 +39,12 @@ double objective_function(const std::vector<double> &x, std::vector<double> &gra
     return fData->fFunc(x);
 }
 
-std::vector<double> hft::optimizer::ConvexBase::optimize(int number_of_variables, FunctionDefinition fFitness,
+std::vector<double> hft::optimizer::ConvexBase::optimize(std::vector<double> x0, FunctionDefinition fFitness,
                                                          std::optional<FunctionDefinition> fEqualityConstrains,
                                                          std::optional<FunctionDefinition> fInequalityConstaints) const
 {
 
+    auto number_of_variables = x0.size();
     auto opt = get_optimizer(number_of_variables);
     FunctionDefinition *fData = &fFitness;
 
@@ -66,7 +68,7 @@ std::vector<double> hft::optimizer::ConvexBase::optimize(int number_of_variables
     opt->set_maxeval(100);
 
     // Initial guess
-    std::vector<double> x = {0.5, 0.5};
+    std::vector<double> x = x0;
 
     // Perform the optimization
     double minf;
