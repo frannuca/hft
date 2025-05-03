@@ -21,8 +21,7 @@ class ConvexBase
     virtual ~ConvexBase() = default;
     virtual std::string name() const = 0;
     std::vector<double> optimize(std::vector<double> x0, FunctionDefinition fFitness,
-                                 std::optional<FunctionDefinition> fEqualityConstrains,
-                                 std::optional<FunctionDefinition> fInequalityConstaints) const;
+                                 std::vector<std::pair<double, double>> boundaries) const;
 
   protected:
     virtual std::unique_ptr<nlopt::opt> get_optimizer(int number_of_variables) const = 0;

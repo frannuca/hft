@@ -40,28 +40,32 @@ double objective_function(const std::vector<double> &x, std::vector<double> &gra
 }
 
 std::vector<double> hft::optimizer::ConvexBase::optimize(std::vector<double> x0, FunctionDefinition fFitness,
-                                                         std::optional<FunctionDefinition> fEqualityConstrains,
-                                                         std::optional<FunctionDefinition> fInequalityConstaints) const
+                                                         std::vector<std::pair<double, double>> boundaries) const
 {
 
     auto number_of_variables = x0.size();
     auto opt = get_optimizer(number_of_variables);
     FunctionDefinition *fData = &fFitness;
 
-    auto fDataEqConstaint = fEqualityConstrains.has_value() ? &fEqualityConstrains : nullptr;
-    auto fDataInEqConstaint = fInequalityConstaints.has_value() ? &fInequalityConstaints : nullptr;
+    std::vector<double> lb;
+    std::vector<double> ub;
+    if (!boundaries.empty())
+    {
+        if (boundaries.size() != number_of_variables)
+        {
+            throw std::invalid_argument("Dimension mismatch between boundaries and number of variables");
+        }
+
+        for (auto [l, u] : boundaries)
+        {
+            lb.push_back(l);
+            ub.push_back(u);
+        }
+        opt->set_lower_bounds(lb);
+        opt->set_upper_bounds(ub);
+    }
 
     opt->set_min_objective(objective_function, (void *)fData);
-
-    if (fDataInEqConstaint != nullptr)
-    {
-
-        opt->add_inequality_constraint(objective_function, (void *)fDataInEqConstaint);
-    }
-    if (fDataEqConstaint != nullptr)
-    {
-        opt->add_equality_constraint(objective_function, (void *)fDataInEqConstaint, 1e-6);
-    }
 
     // Set optimization parameters
     opt->set_xtol_rel(1e-6);

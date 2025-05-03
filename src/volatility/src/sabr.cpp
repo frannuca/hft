@@ -1,14 +1,23 @@
 #include "volatility/sabr.hpp"
-#include "optimization/ConvexLBFGS.h"
 #include "optimization/NelderMead.h"
-#include <algorithm>
-#include <iostream>
-#include <iterator>
-#include <map>
+#include <chrono>
+#include <utility>
 
-using namespace volatility;
+using namespace hft::volatility;
 
-SABR::SABR(double alpha, double beta, double rho, double nu) : alpha_(alpha), beta_(beta), rho_(rho), nu_(nu){};
+SABR::SABR(double alpha, double beta, double rho, double nu, std::chrono::year_month_day cob_date,
+           hft::time::DayCountConvention dc)
+    : alpha_(alpha), beta_(beta), rho_(rho), nu_(nu), cob_date_(cob_date)
+{
+    day_count_convention_ = hft::time::create_daycount_convention(dc);
+};
+
+double SABR::operator()(double F, double K, hft::time::Date T) const
+{
+
+    auto year_fraction = day_count_convention_->year_fraction(cob_date_, T);
+    return (*this)(F, K, year_fraction);
+}
 
 double SABR::operator()(double F, double K, double T) const
 {
@@ -26,10 +35,6 @@ double SABR::operator()(double F, double K, double T) const
     if (T <= 0.0)
     {
         throw std::invalid_argument("Invalid input: T must be positive.");
-    }
-    if (F == K == T == nu_ == rho_ == alpha_ == beta_)
-    {
-        return 0;
     }
 
     const double epsilon = 1e-8; // small value to avoid division by zero
@@ -62,7 +67,7 @@ double SABR::operator()(double F, double K, double T) const
     return impliedVol;
 };
 
-SABR SABR::CreateModel(SABRData surface_data)
+SABR SABR::CreateModel(SABRData surface_data, std::chrono::year_month_day cob_date, hft::time::DayCountConvention dc)
 {
     // Extract market data from surface_data
     // Initial guess for SABR parameters
@@ -70,7 +75,7 @@ SABR SABR::CreateModel(SABRData surface_data)
     double beta = 0.5;
     double rho = 0.0;
     double nu = 0.2;
-
+    auto day_count_convention = hft::time::create_daycount_convention(dc);
     // Define the objective function for optimization
     auto objectiveFunction = [&](const std::vector<double> &params)
     {
@@ -80,29 +85,30 @@ SABR SABR::CreateModel(SABRData surface_data)
         double nu = params[3];
 
         double error = 0.0;
+        SABR sabrModel(alpha, beta, rho, nu, cob_date, dc);
 
         for (const SABRDataRow &point : surface_data.rows)
         {
             double F = point.forward;
             double K = point.strike;
-            double T = point.maturity_in_years;
+            double T = day_count_convention->year_fraction(cob_date, point.maturity_date);
             double marketVol = point.implied_volatility;
 
-            SABR sabrModel(alpha, beta, rho, nu);
             double modelVol = sabrModel(F, K, T);
 
             error += std::pow(modelVol - marketVol, 2);
         }
 
-        // std::cout << "Error: " << error << std::endl;
         return error;
     };
 
     hft::optimizer::FunctionDefinition function_support{.fFunc = objectiveFunction, .fGrad = std::nullopt};
 
     hft::optimizer::ConvexNelderMead convex;
-    auto result = convex.optimize({alpha, beta, rho, nu}, function_support, std::nullopt, std::nullopt);
+    auto result = convex.optimize(
+        {alpha, beta, rho, nu}, function_support,
+        {std::make_pair(0.01, 2.0), std::make_pair(0.0, 1.0), std::make_pair(-0.99, 0.99), std::make_pair(0.01, 2.0)});
 
     // Create and return the calibrated SABR model
-    return SABR(result[0], result[1], result[2], result[3]);
+    return SABR(result[0], result[1], result[2], result[3], cob_date, dc);
 }
