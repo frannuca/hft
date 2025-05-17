@@ -1,9 +1,8 @@
 #ifndef HFT_OPTIMIZER_CONVEXAUGLAG_H
 #define HFT_OPTIMIZER_CONVEXAUGLAG_H
+
 #include "convexbase.h"
-#include <memory.h>
-#include <memory>
-#include <string>
+
 
 namespace hft::optimizer
 {

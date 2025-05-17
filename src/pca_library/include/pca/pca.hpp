@@ -1,7 +1,8 @@
-#ifndef MULTI_PROJECT_TEMPLATE_LIB1_H
-#define MULTI_PROJECT_TEMPLATE_LIB1_H
+#ifndef MULTI_PROJECT_PCA_H
+#define MULTI_PROJECT_PCA_H
 
 #include <Eigen/Dense>
+#include <optional>
 
 namespace hft::pca{
 /// @brief Principal Component Analysis (PCA) class for dimensionality reduction.

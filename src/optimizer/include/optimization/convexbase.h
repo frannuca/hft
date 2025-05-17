@@ -1,7 +1,10 @@
 #ifndef HFT_OPTIMIZER_CONVEXBASE_H
 #define HFT_OPTIMIZER_CONVEXBASE_H
+#include <optional>
 #include <functional>
 #include <string>
+#include <memory>
+
 namespace nlopt
 {
 class opt;

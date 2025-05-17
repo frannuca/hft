@@ -1,6 +1,8 @@
 
 # Include Eigen
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+# Optionally add a custom path for Eigen3 if it's not in the default location:
+# list(APPEND CMAKE_PREFIX_PATH "/path/to/eigen")
 # Find and include NLopt
 find_package(NLopt REQUIRED)
 

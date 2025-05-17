@@ -2,6 +2,7 @@
 #include "optimization/NelderMead.h"
 #include <chrono>
 #include <utility>
+#include <cmath>
 
 using namespace hft::volatility;
 

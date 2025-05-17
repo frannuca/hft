@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 project(HFT)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+
 
 set(GLOBAL_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
@@ -44,6 +47,7 @@ install(FILES ${executables}      DESTINATION "bin")
 install(FILES ${shared_libraries} DESTINATION "bin")
 install(FILES ${static_libraries} DESTINATION "bin")
 
+list(APPEND CMAKE_PREFIX_PATH "/path/to/eigen")
 
 # SDK Installation
 install(DIRECTORY "src/pca_library/include/" DESTINATION ${GLOBAL_OUTPUT_PATH} FILES_MATCHING PATTERN "*.h")

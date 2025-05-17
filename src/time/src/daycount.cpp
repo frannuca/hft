@@ -1,6 +1,10 @@
 #include "time/daycount.hpp"
 #include <chrono>
+#include <cmath>
+
 using namespace hft::time;
+using namespace std::chrono;
+
 
 class DayCountConventionACT_360 : public DayCountConventionBase
 {
